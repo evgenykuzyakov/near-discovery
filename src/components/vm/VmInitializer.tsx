@@ -27,7 +27,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useEthersProviderContext } from '@/data/web3';
 import { useSignInRedirect } from '@/hooks/useSignInRedirect';
-import { setupFastAuth } from '@/lib/selector/setup';
 import { useAuthStore } from '@/stores/auth';
 import { useVmStore } from '@/stores/vm';
 import { recordWalletConnect, reset as resetSegment } from '@/utils/analytics';
@@ -70,14 +69,6 @@ export default function VmInitializer() {
             }),
             setupNightly(),
             setupWelldoneWallet(),
-            // setupFastAuth({
-            //   networkId,
-            //   signInContractId,
-            //   relayerUrl:
-            //     networkId === 'testnet'
-            //       ? 'http://34.70.226.83:3030/relay'
-            //       : 'https://near-relayer-mainnet.api.pagoda.co/relay',
-            // }) as any, // TODO: Refactor setupFastAuth() to TS
             setupFastAuthWallet(),
             setupKeypom({
               trialAccountSpecs: {
@@ -169,6 +160,7 @@ export default function VmInitializer() {
       logOut,
       refreshAllowance,
       requestSignInWithWallet,
+      vmNear: near,
       signedIn,
     });
   }, [
@@ -180,6 +172,7 @@ export default function VmInitializer() {
     signedIn,
     signedAccountId,
     setAuthStore,
+    near
   ]);
 
   useEffect(() => {
